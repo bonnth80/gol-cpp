@@ -11,5 +11,6 @@ private:
 public:
 	void sortCells();
 	void sortZygotes();
-
+	void updateZygoteCensus();
+	void stepForward();
 };

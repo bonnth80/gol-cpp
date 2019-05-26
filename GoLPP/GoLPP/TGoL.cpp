@@ -1,6 +1,10 @@
 // Windows API Boilerplate
 
 #include <windows.h>
+#include "cell.h"
+#include "censusManager.h"
+#include "cellRenderer.h"
+#include "golDebug.h"
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -48,13 +52,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	HDC hdc;
 	PAINTSTRUCT ps;
 	RECT rect;
+	static censusManager cm;
+	static renderer r;
 
 	switch (message) {
 	case WM_PAINT:
-		hdc = BeginPaint(hwnd, &ps);
-		GetClientRect(hwnd, &rect);
-		Rectangle(hdc, 1, 1, rect.right, rect.bottom);
-		EndPaint(hwnd, &ps);
+
+#ifdef GOLDEBUGMODE
+		r.drawGrid(hwnd);
+#endif
 		return 0;
 
 	case WM_DESTROY:
