@@ -61,8 +61,8 @@ void Renderer::drawCell(HWND hwnd, HDC hdc, Cell cell) {
 	Rectangle(hdc,
 		render_data_.cellSizeX * cell.getX(),
 		render_data_.cellSizeY * cell.getY(),
-		render_data_.cellSizeX * (cell.getX() + 1),
-		render_data_.cellSizeY * (cell.getY() + 1));
+		render_data_.cellSizeX * (cell.getX() + 1) + 1,
+		render_data_.cellSizeY * (cell.getY() + 1) + 1);
 
 	DeleteObject(hBrush);
 }
@@ -73,8 +73,8 @@ void Renderer::eraseCell(HWND hwnd, HDC hdc, Cell cell) {
 	Rectangle(hdc,
 		render_data_.cellSizeX * cell.getX(),
 		render_data_.cellSizeY * cell.getY(),
-		render_data_.cellSizeX * (cell.getX() + 1),
-		render_data_.cellSizeY * (cell.getY() + 1));
+		render_data_.cellSizeX * (cell.getX() + 1) + 1,
+		render_data_.cellSizeY * (cell.getY() + 1) + 1);
 }
 
 void Renderer::renderState(HWND hwnd, HDC hdc, std::vector<Cell> cellList) {
