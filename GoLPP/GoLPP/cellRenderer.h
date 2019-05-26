@@ -16,24 +16,24 @@ struct RenderData {
 class Renderer {
 private:
 	std::vector<Cell> cell_data_;
-	RenderData RenderData_;
+	RenderData render_data_;
 public:
 	Renderer() {
-		RenderData_.cellSizeX = 10;
-		RenderData_.cellSizeY = 10;
-		RenderData_.sizeX = 50;
-		RenderData_.sizeY = 50;
-		RenderData_.originX = 0;
-		RenderData_.originY = 0;
+		render_data_.cellSizeX = 10;
+		render_data_.cellSizeY = 10;
+		render_data_.sizeX = 50;
+		render_data_.sizeY = 50;
+		render_data_.originX = 0;
+		render_data_.originY = 0;
 	}
 
 	Renderer(int cX, int cY, int sX, int sY, int oX, int oY) {
-		RenderData_.cellSizeX = cX;
-		RenderData_.cellSizeY = cY;
-		RenderData_.sizeX = sX;
-		RenderData_.sizeY = sY;
-		RenderData_.originX = oX;
-		RenderData_.originY = oY;
+		render_data_.cellSizeX = cX;
+		render_data_.cellSizeY = cY;
+		render_data_.sizeX = sX;
+		render_data_.sizeY = sY;
+		render_data_.originX = oX;
+		render_data_.originY = oY;
 	}
 
 	// Mutator
@@ -41,8 +41,8 @@ public:
 	void setCellData(std::vector<Cell>);
 
 	// Methods
-	void drawGrid(HWND);
-	void drawCell(Cell);
+	void drawGrid(HWND, HDC);
+	void drawCell(HWND, HDC, Cell);
 	void eraseCell(Cell);
 	void renderState(HWND);
 };

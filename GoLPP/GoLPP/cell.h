@@ -10,6 +10,14 @@ public:
 	// constructor
 	Cell(int, int, bool);
 
+	// Mutators
+	int getX();
+	int getY();
+
+	// Accessors
+	void setX();
+	void setY();
+
 	// Methods
 	void render();
 	unsigned short countLiveNeighbors();

@@ -6,3 +6,11 @@ Cell::Cell(int px, int py, bool pb) {
 	isAlive = pb;
 	liveAdj = 0;
 }
+
+int Cell::getX() {
+	return x;
+}
+
+int Cell::getY() {
+	return y;
+}
