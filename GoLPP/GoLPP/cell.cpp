@@ -14,3 +14,7 @@ int Cell::getX() {
 int Cell::getY() {
 	return y;
 }
+
+bool Cell::getAlive() {
+	return isAlive;
+}

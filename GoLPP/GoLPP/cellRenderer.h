@@ -4,12 +4,12 @@
 #include <vector>
 
 struct RenderData {
-	int cellSizeX;
-	int cellSizeY;
-	int sizeX;
-	int sizeY;
-	int originX;
-	int originY;
+	INT cellSizeX;
+	INT cellSizeY;
+	INT sizeX;
+	INT sizeY;
+	INT originX;
+	INT originY;
 	
 };
 
@@ -27,7 +27,7 @@ public:
 		render_data_.originY = 0;
 	}
 
-	Renderer(int cX, int cY, int sX, int sY, int oX, int oY) {
+	Renderer(INT cX, INT cY, INT sX, INT sY, INT oX, INT oY) {
 		render_data_.cellSizeX = cX;
 		render_data_.cellSizeY = cY;
 		render_data_.sizeX = sX;
@@ -43,6 +43,6 @@ public:
 	// Methods
 	void drawGrid(HWND, HDC);
 	void drawCell(HWND, HDC, Cell);
-	void eraseCell(Cell);
-	void renderState(HWND);
+	void eraseCell(HWND, HDC, Cell);
+	void renderState(HWND, HDC, std::vector<Cell>);
 };

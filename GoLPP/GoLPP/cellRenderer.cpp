@@ -3,8 +3,6 @@
 #include <string>
 #include "golDebug.h"
 
-using namespace std;
-
 void Renderer::drawGrid(HWND hwnd, HDC hdc) {
 	RECT rect;
 	GetClientRect(hwnd, &rect);
@@ -67,4 +65,23 @@ void Renderer::drawCell(HWND hwnd, HDC hdc, Cell cell) {
 		render_data_.cellSizeY * (cell.getY() + 1));
 
 	DeleteObject(hBrush);
+}
+
+void Renderer::eraseCell(HWND hwnd, HDC hdc, Cell cell) {
+	SelectObject(hdc, WHITE_BRUSH);
+
+	Rectangle(hdc,
+		render_data_.cellSizeX * cell.getX(),
+		render_data_.cellSizeY * cell.getY(),
+		render_data_.cellSizeX * (cell.getX() + 1),
+		render_data_.cellSizeY * (cell.getY() + 1));
+}
+
+void Renderer::renderState(HWND hwnd, HDC hdc, std::vector<Cell> cellList) {
+	for (INT i = 0; i < cellList.size(); i++) {
+		if (cellList[i].getAlive())
+			drawCell(hwnd, hdc, cellList[i]);
+		else
+			eraseCell(hwnd, hdc, cellList[i]);
+	}
 }

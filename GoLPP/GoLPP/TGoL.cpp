@@ -1,6 +1,7 @@
 // Windows API Boilerplate
 
 #include <windows.h>
+#include <vector>
 #include "cell.h"
 #include "censusManager.h"
 #include "cellRenderer.h"
@@ -54,17 +55,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	RECT rect;
 	static CensusManager cm;
 	static Renderer r;
-	static Cell cell_00(5,3,true), cell_01(43,44,true), cell_02(45,43,true);
+	static Cell cell_00(5, 3, true), cell_01(43, 44, true), cell_02(45, 43, true);
+	static std::vector<Cell> cells;
 
 	switch (message) {
 	case WM_PAINT:
 
 #ifdef GOL_DEBUG_MODE
+		cells.push_back(cell_00);
+		cells.push_back(cell_01);
+		cells.push_back(cell_02);
+
 		hdc = BeginPaint(hwnd, &ps);
 		r.drawGrid(hwnd, hdc);
-		r.drawCell(hwnd, hdc, cell_00);
-		r.drawCell(hwnd, hdc, cell_01);
-		r.drawCell(hwnd, hdc, cell_02);
+		r.renderState(hwnd, hdc, cells);
 		EndPaint(hwnd, &ps);
 #endif
 		return 0;

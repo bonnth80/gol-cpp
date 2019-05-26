@@ -10,13 +10,15 @@ public:
 	// constructor
 	Cell(int, int, bool);
 
-	// Mutators
+	// Accessors
 	int getX();
 	int getY();
+	bool getAlive();
 
-	// Accessors
-	void setX();
-	void setY();
+	// Mutators
+	void setX(int);
+	void setY(int);
+	void setAlive(bool);
 
 	// Methods
 	void render();
