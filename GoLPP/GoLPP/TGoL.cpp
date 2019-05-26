@@ -55,20 +55,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	RECT rect;
 	static CensusManager cm;
 	static Renderer r;
-	static Cell cell_00(5, 3, true), cell_01(43, 44, true), cell_02(45, 43, true);
-	static std::vector<Cell> cells;
 
 	switch (message) {
 	case WM_PAINT:
 
 #ifdef GOL_DEBUG_MODE
-		cells.push_back(cell_00);
-		cells.push_back(cell_01);
-		cells.push_back(cell_02);
-
 		hdc = BeginPaint(hwnd, &ps);
-		r.drawGrid(hwnd, hdc);
-		r.renderState(hwnd, hdc, cells);
+		cm.renderState(hwnd,hdc,r);
 		EndPaint(hwnd, &ps);
 #endif
 		return 0;
