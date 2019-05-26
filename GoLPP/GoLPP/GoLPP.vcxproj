@@ -147,12 +147,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cell.cpp" />
+    <ClCompile Include="cellRenderer.cpp" />
     <ClCompile Include="censusManager.cpp" />
     <ClCompile Include="TGoL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cell.h" />
+    <ClInclude Include="cellRenderer.h" />
     <ClInclude Include="censusManager.h" />
+    <ClInclude Include="golDebug.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

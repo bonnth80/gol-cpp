@@ -24,12 +24,21 @@
     <ClCompile Include="censusManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cellRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="censusManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cellRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="golDebug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
