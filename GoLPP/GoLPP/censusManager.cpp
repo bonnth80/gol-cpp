@@ -2,6 +2,6 @@
 #include <vector>
 #include <windows.h>
 
-void censusManager::sortCells() {
+void CensusManager::sortCells() {
 
 }

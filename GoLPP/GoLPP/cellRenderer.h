@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <vector>
 
-struct renderData {
+struct RenderData {
 	int cellSizeX;
 	int cellSizeY;
 	int sizeX;
@@ -13,36 +13,36 @@ struct renderData {
 	
 };
 
-class renderer {
+class Renderer {
 private:
-	std::vector<cell> cellData;
-	renderData rd;
+	std::vector<Cell> cell_data_;
+	RenderData RenderData_;
 public:
-	renderer() {
-		rd.cellSizeX = 10;
-		rd.cellSizeY = 10;
-		rd.sizeX = 50;
-		rd.sizeY = 50;
-		rd.originX = 0;
-		rd.originY = 0;
+	Renderer() {
+		RenderData_.cellSizeX = 10;
+		RenderData_.cellSizeY = 10;
+		RenderData_.sizeX = 50;
+		RenderData_.sizeY = 50;
+		RenderData_.originX = 0;
+		RenderData_.originY = 0;
 	}
 
-	renderer(int cX, int cY, int sX, int sY, int oX, int oY) {
-		rd.cellSizeX = cX;
-		rd.cellSizeY = cY;
-		rd.sizeX = sX;
-		rd.sizeY = sY;
-		rd.originX = oX;
-		rd.originY = oY;
+	Renderer(int cX, int cY, int sX, int sY, int oX, int oY) {
+		RenderData_.cellSizeX = cX;
+		RenderData_.cellSizeY = cY;
+		RenderData_.sizeX = sX;
+		RenderData_.sizeY = sY;
+		RenderData_.originX = oX;
+		RenderData_.originY = oY;
 	}
 
 	// Mutator
 	void setRenderData();
-	void setCellData(std::vector<cell>);
+	void setCellData(std::vector<Cell>);
 
 	// Methods
 	void drawGrid(HWND);
-	void drawCell(int x, int y);
-	void eraseCell(int x, int y);
+	void drawCell(Cell);
+	void eraseCell(Cell);
 	void renderState(HWND);
 };

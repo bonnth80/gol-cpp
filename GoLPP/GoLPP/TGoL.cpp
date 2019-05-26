@@ -52,13 +52,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	HDC hdc;
 	PAINTSTRUCT ps;
 	RECT rect;
-	static censusManager cm;
-	static renderer r;
+	static CensusManager cm;
+	static Renderer r;
 
 	switch (message) {
 	case WM_PAINT:
 
-#ifdef GOLDEBUGMODE
+#ifdef GOL_DEBUG_MODE
 		r.drawGrid(hwnd);
 #endif
 		return 0;

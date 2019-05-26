@@ -3,10 +3,10 @@
 #include <vector>
 #include "cell.h"
 
-class censusManager {
+class CensusManager {
 private:
-	std::vector<cell> cellCensus;
-	std::vector<zygote> zygoteCensus;
+	std::vector<Cell> cellCensus_;
+	std::vector<Zygote> zygoteCensus_;
 
 public:
 	void sortCells();

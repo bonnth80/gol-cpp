@@ -1,6 +1,6 @@
 #pragma once
 
-class cell {
+class Cell {
 private:
 	int x;
 	int y;
@@ -8,7 +8,7 @@ private:
 	unsigned short liveAdj;
 public:
 	// constructor
-	cell(int, int, bool);
+	Cell(int, int, bool);
 
 	// Methods
 	void render();
@@ -16,7 +16,7 @@ public:
 	unsigned short countDeadNeighbors();
 };
 
-class zygote:cell {
+class Zygote:Cell {
 private:
 public:
 };

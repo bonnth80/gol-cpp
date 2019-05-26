@@ -1,3 +1,3 @@
 #pragma once
 
-#define GOLDEBUGMODE
+#define GOL_DEBUG_MODE
