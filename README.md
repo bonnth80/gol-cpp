@@ -1,2 +1,2 @@
 * WIP
-** game of life in cpp
+game of life in cpp
