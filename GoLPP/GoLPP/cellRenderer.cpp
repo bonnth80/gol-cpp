@@ -7,12 +7,12 @@ void Renderer::drawGrid(HWND hwnd, HDC hdc) {
 	RECT rect;
 	GetClientRect(hwnd, &rect);
 
-	for (INT i = 0; i < rect.right; i += render_data_.cellSizeX) {
+	for (int i = 0; i < rect.right; i += render_data_.cellSizeX) {
 		MoveToEx(hdc, i, 0, NULL);
 		LineTo(hdc, i, rect.bottom);
 	}
 
-	for (INT i = 0; i < rect.bottom; i += render_data_.cellSizeY) {
+	for (int i = 0; i < rect.bottom; i += render_data_.cellSizeY) {
 		MoveToEx(hdc, 0, i, NULL);
 		LineTo(hdc, rect.right, i);
 	}
@@ -78,7 +78,7 @@ void Renderer::eraseCell(HWND hwnd, HDC hdc, Cell cell) {
 }
 
 void Renderer::renderState(HWND hwnd, HDC hdc, std::vector<Cell> cellList) {
-	for (INT i = 0; i < cellList.size(); i++) {
+	for (int i = 0; i < cellList.size(); i++) {
 		if (cellList[i].getAlive())
 			drawCell(hwnd, hdc, cellList[i]);
 		else

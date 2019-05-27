@@ -4,10 +4,10 @@
 #include <vector>
 
 struct RenderData {
-	INT cellSizeX;		// horizontal size of cells in pixels
-	INT cellSizeY;		// vertical size of cells in pixels
-	INT originX;		// pixel location of x origin
-	INT originY;		// pixel location of y origin
+	int cellSizeX;		// horizontal size of cells in pixels
+	int cellSizeY;		// vertical size of cells in pixels
+	int originX;		// pixel location of x origin
+	int originY;		// pixel location of y origin
 	
 };
 
@@ -24,7 +24,7 @@ public:
 		render_data_.originY = 0;
 	}
 
-	Renderer(INT cX, INT cY, INT oX, INT oY) {
+	Renderer(int cX, int cY, int oX, int oY) {
 		render_data_.cellSizeX = cX;
 		render_data_.cellSizeY = cY;
 		render_data_.originX = oX;

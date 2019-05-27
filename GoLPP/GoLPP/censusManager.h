@@ -10,14 +10,29 @@ private:
 	std::vector<Cell> cellCensus_;
 	std::vector<Zygote> zygoteCensus_;
 
+private:
+	// Methods
+	void swapCells(int, int);
+	void swapZygotes(int, int);
+
 public:
 	// Constructor
 	CensusManager() {}
-	CensusManager(std::vector<Cell> vC) {cellCensus_ = vC;}
+	CensusManager(std::vector<Cell> vC) {
+		cellCensus_ = vC;
+		sortCells();
+	}
 
+	// Methods
 	void renderState(HWND, HDC, Renderer);
+
 	void sortCells();
+	int addCell(Cell);
 	void sortZygotes();
+	void addZygote(Zygote);
+
+
 	void updateZygoteCensus();
+
 	void stepForward();
 };
