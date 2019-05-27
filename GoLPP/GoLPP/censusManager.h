@@ -8,7 +8,7 @@
 class CensusManager {
 private:
 	std::vector<Cell> cellCensus_;
-	std::vector<Zygote> zygoteCensus_;
+	std::vector<Cell> zygoteCensus_;
 
 private:
 	// Methods
@@ -29,7 +29,7 @@ public:
 	void sortCells();
 	int addCell(Cell);
 	void sortZygotes();
-	void addZygote(Zygote);
+	void addZygote(Cell);
 
 
 	void updateZygoteCensus();

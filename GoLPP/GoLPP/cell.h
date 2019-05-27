@@ -5,7 +5,7 @@ private:
 	int x;
 	int y;
 	bool isAlive;
-	unsigned short liveAdj;
+	int neighbors;
 public:
 	// constructor
 	Cell(int, int, bool);
@@ -31,9 +31,4 @@ public:
 	bool operator>=(Cell);
 	bool operator<(Cell);
 	bool operator<=(Cell);
-};
-
-class Zygote:Cell {
-private:
-public:
 };
