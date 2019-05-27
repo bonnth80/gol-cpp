@@ -22,7 +22,7 @@ void CensusManager::sortCells() {
 		minElement = i;
 
 		for (int j = i + 1; j < cellCensus_.size(); j++)
-			if (j < i)
+			if (cellCensus_[j] < cellCensus_[minElement])
 				minElement = j;
 
 		if (i != minElement)
@@ -54,4 +54,42 @@ int CensusManager::addCell(Cell c) {
 	// into last index
 	cellCensus_.push_back(c);
 	return cellCensus_.size();
+}
+
+void CensusManager::sortZygotes() {
+	//stub
+}
+
+int CensusManager::addZygote(Cell c) {
+	//stub
+	return 0;
+}
+
+bool CensusManager::findCell(Cell c) {
+	int low = 0,
+		mid = 0,
+		high = cellCensus_.size() - 1;
+
+
+	while (low < high) {
+		mid = low + (high - low) / 2;
+		if (cellCensus_[mid] == c)
+			return true;
+
+		if (cellCensus_[mid] < c)
+			low = mid + 1;
+
+		else
+			high = mid - 1;
+	}
+
+	return false;
+}
+
+void CensusManager::updateZygoteCensus() {
+	//stub
+}
+
+void CensusManager::stepForward() {
+
 }

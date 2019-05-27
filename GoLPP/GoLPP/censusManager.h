@@ -29,8 +29,9 @@ public:
 	void sortCells();
 	int addCell(Cell);
 	void sortZygotes();
-	void addZygote(Cell);
+	int addZygote(Cell);
 
+	bool findCell(Cell);
 
 	void updateZygoteCensus();
 

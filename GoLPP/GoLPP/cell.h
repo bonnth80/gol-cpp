@@ -26,7 +26,8 @@ public:
 	unsigned short countDeadNeighbors();
 
 	//Operators
-	bool operator=(Cell);
+	bool operator==(Cell);
+	bool operator!=(Cell);
 	bool operator>(Cell);
 	bool operator>=(Cell);
 	bool operator<(Cell);

@@ -21,12 +21,12 @@ void Renderer::drawGrid(HWND hwnd, HDC hdc) {
 	INT sizeX = rect.right;
 	WCHAR sizeXC[20];
 	UINT bufferSizeX = wsprintf(sizeXC, TEXT("X size: %d"), sizeX);
-	TextOut(hdc, 200, 100, sizeXC, bufferSizeX);
+	TextOut(hdc, GDC.getLeft(), GDC.useLine(), sizeXC, bufferSizeX);
 
 	INT sizeY = rect.bottom;
 	WCHAR sizeYC[20];
 	UINT bufferSizeY = wsprintf(sizeYC, TEXT("X size: %d"), sizeY);
-	TextOut(hdc, 200, 180, sizeYC, bufferSizeY);
+	TextOut(hdc, GDC.getLeft(), GDC.useLine(), sizeYC, bufferSizeY);
 #endif
 }
 
@@ -35,28 +35,6 @@ void Renderer::drawCell(HWND hwnd, HDC hdc, Cell cell) {
 
 	hBrush = CreateSolidBrush(RGB(12,84,255));
 	SelectObject(hdc, hBrush);
-
-#ifdef GOL_DEBUG_MODE
-	INT rectX1 = render_data_.cellSizeX * cell.getX();
-	WCHAR rectX1C[20];
-	UINT bufferRectX1 = wsprintf(rectX1C, TEXT("X1: %d"), rectX1);
-	TextOut(hdc, 400, 80, rectX1C, bufferRectX1);
-
-	INT rectY1 = render_data_.cellSizeY * cell.getY();
-	WCHAR rectY1C[20];
-	UINT bufferRectY1 = wsprintf(rectY1C, TEXT("Y1: %d"), rectY1);
-	TextOut(hdc, 400, 100, rectY1C, bufferRectY1);
-
-	INT rectX2 = render_data_.cellSizeX * cell.getX();
-	WCHAR rectX2C[20];
-	UINT bufferRectX2 = wsprintf(rectX1C, TEXT("X2: %d"), rectX2);
-	TextOut(hdc, 400, 120, rectX1C, bufferRectX1);
-
-	INT rectY2 = render_data_.cellSizeY * cell.getY();
-	WCHAR rectY2C[20];
-	UINT bufferRectY2 = wsprintf(rectY2C, TEXT("Y2: %d"), rectY2);
-	TextOut(hdc, 400, 100, rectY2C, bufferRectY2);
-#endif
 
 	Rectangle(hdc,
 		render_data_.cellSizeX * cell.getX(),
@@ -78,10 +56,20 @@ void Renderer::eraseCell(HWND hwnd, HDC hdc, Cell cell) {
 }
 
 void Renderer::renderState(HWND hwnd, HDC hdc, std::vector<Cell> cellList) {
-	for (int i = 0; i < cellList.size(); i++) {
+	for (unsigned int i = 0; i < cellList.size(); i++) {
 		if (cellList[i].getAlive())
 			drawCell(hwnd, hdc, cellList[i]);
 		else
 			eraseCell(hwnd, hdc, cellList[i]);
 	}
+
+#ifdef GOL_DEBUG_MODE
+	for (unsigned int i = 0; i < cellList.size(); i++) {
+		INT cellX = cellList[i].getX();
+		INT cellY = cellList[i].getY();
+		WCHAR cellInfo[24];
+		UINT bufferRectX1 = wsprintf(cellInfo, TEXT("Cell %d: (%d,%d)"), i, cellX, cellY);
+		TextOut(hdc, GDC.getLeft(), GDC.useLine(), cellInfo, bufferRectX1);
+	}
+#endif
 }
