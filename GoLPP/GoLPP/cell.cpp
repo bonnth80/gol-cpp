@@ -18,3 +18,38 @@ int Cell::getY() {
 bool Cell::getAlive() {
 	return isAlive;
 }
+
+
+// Operators ********************************
+
+bool Cell::operator=(Cell cRight) {
+	return (x == cRight.x && y == cRight.y);
+}
+
+bool Cell::operator>(Cell cRight) {
+	if (x > cRight.x)
+		return true;
+	else
+		return (y > cRight.y);
+}
+
+bool Cell::operator>=(Cell cRight) {
+	if (x > cRight.x)
+		return true;
+	else
+		return (x == cRight.x && y >= cRight.y);
+}
+
+bool Cell::operator<(Cell cRight) {
+	if (x < cRight.x)
+		return true;
+	else
+		return (y < cRight.y);
+}
+
+bool Cell::operator<=(Cell cRight) {
+	if (x < cRight.x)
+		return true;
+	else
+		return (x == cRight.x && y <= cRight.y);
+}

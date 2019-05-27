@@ -24,6 +24,13 @@ public:
 	void render();
 	unsigned short countLiveNeighbors();
 	unsigned short countDeadNeighbors();
+
+	//Operators
+	bool operator=(Cell);
+	bool operator>(Cell);
+	bool operator>=(Cell);
+	bool operator<(Cell);
+	bool operator<=(Cell);
 };
 
 class Zygote:Cell {

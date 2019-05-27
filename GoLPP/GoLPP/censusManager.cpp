@@ -7,3 +7,7 @@ void CensusManager::renderState(HWND hwnd, HDC hdc, Renderer r) {
 	r.drawGrid(hwnd, hdc);
 	r.renderState(hwnd, hdc, cellCensus_);
 }
+
+void CensusManager::sortCells() {
+	//stub
+}

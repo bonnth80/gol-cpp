@@ -53,7 +53,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	HDC hdc;
 	PAINTSTRUCT ps;
 	RECT rect;
-	static CensusManager cm;
+
+#ifdef GOL_DEBUG_MODE
+	static Cell cell_00(5, 3, true), cell_01(43, 44, true), cell_02(45, 43, true);
+	static std::vector<Cell> vC;
+	vC.push_back(cell_00);
+	vC.push_back(cell_01);
+	vC.push_back(cell_02);
+#endif
+	static CensusManager cm(vC);
 	static Renderer r;
 
 	switch (message) {
@@ -61,6 +69,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 #ifdef GOL_DEBUG_MODE
 		hdc = BeginPaint(hwnd, &ps);
+
 		cm.renderState(hwnd,hdc,r);
 		EndPaint(hwnd, &ps);
 #endif

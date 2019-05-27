@@ -4,12 +4,10 @@
 #include <vector>
 
 struct RenderData {
-	INT cellSizeX;
-	INT cellSizeY;
-	INT sizeX;
-	INT sizeY;
-	INT originX;
-	INT originY;
+	INT cellSizeX;		// horizontal size of cells in pixels
+	INT cellSizeY;		// vertical size of cells in pixels
+	INT originX;		// pixel location of x origin
+	INT originY;		// pixel location of y origin
 	
 };
 
@@ -18,20 +16,17 @@ private:
 	std::vector<Cell> cell_data_;
 	RenderData render_data_;
 public:
+	// Constructor
 	Renderer() {
 		render_data_.cellSizeX = 10;
 		render_data_.cellSizeY = 10;
-		render_data_.sizeX = 50;
-		render_data_.sizeY = 50;
 		render_data_.originX = 0;
 		render_data_.originY = 0;
 	}
 
-	Renderer(INT cX, INT cY, INT sX, INT sY, INT oX, INT oY) {
+	Renderer(INT cX, INT cY, INT oX, INT oY) {
 		render_data_.cellSizeX = cX;
 		render_data_.cellSizeY = cY;
-		render_data_.sizeX = sX;
-		render_data_.sizeY = sY;
 		render_data_.originX = oX;
 		render_data_.originY = oY;
 	}

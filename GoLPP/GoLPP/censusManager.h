@@ -12,14 +12,8 @@ private:
 
 public:
 	// Constructor
-	CensusManager() {
-#ifdef GOL_DEBUG_MODE
-		static Cell cell_00(5, 3, true), cell_01(43, 44, true), cell_02(45, 43, true);
-		cellCensus_.push_back(cell_00);
-		cellCensus_.push_back(cell_01);
-		cellCensus_.push_back(cell_02);
-#endif
-	}
+	CensusManager() {}
+	CensusManager(std::vector<Cell> vC) {cellCensus_ = vC;}
 
 	void renderState(HWND, HDC, Renderer);
 	void sortCells();
