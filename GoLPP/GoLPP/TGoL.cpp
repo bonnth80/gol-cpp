@@ -52,8 +52,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
 	PAINTSTRUCT ps;
-	RECT rect;
-
+	RECT psRect;
 
 #ifdef GOL_DEBUG_MODE
 	GDC.resetCurrentLine();
@@ -69,36 +68,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	vC.push_back(cell_02);
 	vC.push_back(cell_03);
 	vC.push_back(cell_04);
-
-	Cell cellTest(111, 3, true);
-	bool cellFind = false;
-	UINT buf = 0;
-	WCHAR dbNfo[24];
 #endif
 
-	static CensusManager cm(vC);
-	static Renderer r;
+	static CensusManager cm(vC, hwnd);
+
 	switch (message) {
 	
 	case WM_PAINT:
 
-#ifdef GOL_DEBUG_MODE
 		hdc = BeginPaint(hwnd, &ps);
 
-		cm.renderState(hwnd,hdc,r);
-
-		buf = wsprintf(dbNfo, TEXT("(%d,%d) IsFound: %d"), cellTest.getX(), cellTest.getY(), cellFind);
-		TextOut(hdc, GDC.getLeft(), GDC.useLine(), dbNfo, buf);
-
-		buf = wsprintf(dbNfo, TEXT("GDC Currentline: %d"), GDC.getCurrentLine());
-		TextOut(hdc, GDC.getLeft(), GDC.useLine(), dbNfo, buf);
+		cm.renderState(hwnd,hdc);
 
 		EndPaint(hwnd, &ps);
-#endif
 		return 0;
 	case WM_KEYDOWN:
 		cm.stepForward();
-		InvalidateRect(hwnd, NULL, true);
+		
+		InvalidateRect(hwnd, NULL, TRUE);
 		return 0;
 	case WM_DESTROY:
 		PostQuitMessage(0);

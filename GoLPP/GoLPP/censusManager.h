@@ -1,5 +1,4 @@
 #pragma once
-
 #include <vector>
 #include "cell.h"
 #include "cellRenderer.h"
@@ -9,8 +8,8 @@ class CensusManager {
 private:
 	std::vector<Cell> cellCensus_;
 	std::vector<Cell> zygoteCensus_;
-	//std::vector<Cell> toggleList_;
-
+	Renderer renderer;
+	int uiAreaHeight;
 private:
 	// Methods
 	void swapCells(int, int);
@@ -24,16 +23,30 @@ private:
 public:
 	// Constructor
 	CensusManager() {}
-	CensusManager(std::vector<Cell> vC) {
+
+	CensusManager(std::vector<Cell> vC, HWND hwnd) {
 		cellCensus_ = vC;
 		sortCells();
+
+		RECT rect;
+		GetClientRect(hwnd, &rect);
+		uiAreaHeight = 200;
+		rect.bottom -= uiAreaHeight;
+
+		RenderData rd;
+		rd.cellSizeX = 10;
+		rd.cellSizeY = 10;
+		rd.originX = 0;
+		rd.originY = 0;
+		rd.renderArea = rect;
+		renderer.setRenderData(rd);
 	}
 
 	// Methods
-	void renderState(HWND, HDC, Renderer);
+	void setRenderArea(RECT);
+	void renderState(HWND, HDC);
 
 	void stepForward();
 	void updateNeighborStatus(Cell &);
 	void updateCellCensus();
-	//void processToggleList();
 };

@@ -4,6 +4,24 @@
 #include "censusManager.h"
 #include "cellRenderer.h"
 
+/*************** Configuration ****************/
+void CensusManager::setRenderArea(RECT rect) {
+	rect.bottom -= uiAreaHeight;
+	renderer.setRenderArea(rect);
+}
+
+/***************** Private Methods *****************/
+void CensusManager::renderState(HWND hwnd, HDC hdc) {
+	RECT rect;
+	GetClientRect(hwnd, &rect);
+
+	setRenderArea(rect);
+	renderer.drawGrid(hwnd, hdc);
+
+
+	renderer.renderState(hwnd, hdc, cellCensus_);
+}
+
 void CensusManager::swapCells(int a, int b) {
 	Cell temp = cellCensus_[a];
 	cellCensus_[a] = cellCensus_[b];
@@ -13,11 +31,6 @@ void CensusManager::swapZygotes(int a, int b) {
 	Cell temp = zygoteCensus_[a];
 	zygoteCensus_[a] = zygoteCensus_[b];
 	zygoteCensus_[b] = temp;
-}
-
-void CensusManager::renderState(HWND hwnd, HDC hdc, Renderer r) {
-	r.drawGrid(hwnd, hdc);
-	r.renderState(hwnd, hdc, cellCensus_);
 }
 
 void CensusManager::sortCells() {
@@ -107,7 +120,7 @@ bool CensusManager::findCell(int x, int y) {
 	return findCell(newCell);
 }
 
-
+/******************* GOL LOGIC **************************/
 
 void CensusManager::stepForward() {
 	zygoteCensus_.clear();

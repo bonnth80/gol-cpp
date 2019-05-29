@@ -7,13 +7,12 @@ struct RenderData {
 	int cellSizeX;		// horizontal size of cells in pixels
 	int cellSizeY;		// vertical size of cells in pixels
 	int originX;		// pixel location of x origin
-	int originY;		// pixel location of y origin
-	
+	int originY;		// pixel location of y origin	
+	RECT renderArea;	// Area of client to draw grid
 };
 
 class Renderer {
 private:
-	std::vector<Cell> cell_data_;
 	RenderData render_data_;
 public:
 	// Constructor
@@ -24,20 +23,16 @@ public:
 		render_data_.originY = 0;
 	}
 
-	Renderer(int cX, int cY, int oX, int oY) {
-		render_data_.cellSizeX = cX;
-		render_data_.cellSizeY = cY;
-		render_data_.originX = oX;
-		render_data_.originY = oY;
+	Renderer(RenderData rd) {
+		render_data_ = rd;
 	}
 
 	// Mutator
-	void setRenderData();
-	void setCellData(std::vector<Cell>);
+	void setRenderData(RenderData rd) { render_data_ = rd; };
+	void setRenderArea(RECT);
 
 	// Methods
 	void drawGrid(HWND, HDC);
 	void drawCell(HWND, HDC, Cell);
-	void eraseCell(HWND, HDC, Cell);
 	void renderState(HWND, HDC, std::vector<Cell>);
 };
