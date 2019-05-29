@@ -9,11 +9,17 @@ class CensusManager {
 private:
 	std::vector<Cell> cellCensus_;
 	std::vector<Cell> zygoteCensus_;
+	//std::vector<Cell> toggleList_;
 
 private:
 	// Methods
 	void swapCells(int, int);
 	void swapZygotes(int, int);
+	void sortCells();
+	int addCell(Cell);
+	void sortZygotes();
+	bool findCell(Cell);
+	bool findCell(int, int);
 
 public:
 	// Constructor
@@ -26,14 +32,8 @@ public:
 	// Methods
 	void renderState(HWND, HDC, Renderer);
 
-	void sortCells();
-	int addCell(Cell);
-	void sortZygotes();
-	int addZygote(Cell);
-
-	bool findCell(Cell);
-
-	void updateZygoteCensus();
-
 	void stepForward();
+	void updateNeighborStatus(Cell &);
+	void updateCellCensus();
+	//void processToggleList();
 };

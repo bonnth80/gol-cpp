@@ -56,28 +56,28 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 
 #ifdef GOL_DEBUG_MODE
-	static Cell cell_00(5, 3, true),
-				cell_01(43, 44, true),
-				cell_02(33, 44, true),
-				cell_03(12, 16, true),
-				cell_04(22, 16, true),
-				cell_05(13, 5, true);
+	GDC.resetCurrentLine();
+
+	static Cell cell_00(20, 20, true),
+			cell_01(21, 21, true),
+			cell_02(22, 21, true),
+			cell_03(22, 20, true),
+			cell_04(22, 19, true);
 	static std::vector<Cell> vC;
 	vC.push_back(cell_00);
 	vC.push_back(cell_01);
 	vC.push_back(cell_02);
-	//vC.push_back(cell_03);
+	vC.push_back(cell_03);
 	vC.push_back(cell_04);
-	vC.push_back(cell_05);
 
 	Cell cellTest(111, 3, true);
 	bool cellFind = false;
 	UINT buf = 0;
 	WCHAR dbNfo[24];
 #endif
+
 	static CensusManager cm(vC);
 	static Renderer r;
-
 	switch (message) {
 	
 	case WM_PAINT:
@@ -87,15 +87,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 		cm.renderState(hwnd,hdc,r);
 
-		cellFind = cm.findCell(cellTest);
-
 		buf = wsprintf(dbNfo, TEXT("(%d,%d) IsFound: %d"), cellTest.getX(), cellTest.getY(), cellFind);
+		TextOut(hdc, GDC.getLeft(), GDC.useLine(), dbNfo, buf);
+
+		buf = wsprintf(dbNfo, TEXT("GDC Currentline: %d"), GDC.getCurrentLine());
 		TextOut(hdc, GDC.getLeft(), GDC.useLine(), dbNfo, buf);
 
 		EndPaint(hwnd, &ps);
 #endif
 		return 0;
-
+	case WM_KEYDOWN:
+		cm.stepForward();
+		InvalidateRect(hwnd, NULL, true);
+		return 0;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
