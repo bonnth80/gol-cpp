@@ -52,7 +52,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
 	PAINTSTRUCT ps;
-	RECT psRect;
+	RECT rect;
 
 #ifdef GOL_DEBUG_MODE
 	GDC.resetCurrentLine();
@@ -73,20 +73,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	static CensusManager cm(vC, hwnd);
 
 	switch (message) {
-	
+	case WM_CREATE:
+		GetClientRect(hwnd, &rect);
+		cm.setRenderArea(rect);
+		return 0;
+
 	case WM_PAINT:
-
 		hdc = BeginPaint(hwnd, &ps);
-
 		cm.renderState(hwnd,hdc);
-
 		EndPaint(hwnd, &ps);
 		return 0;
+
 	case WM_KEYDOWN:
-		cm.stepForward();
-		
+		cm.stepForward();		
 		InvalidateRect(hwnd, NULL, TRUE);
 		return 0;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
