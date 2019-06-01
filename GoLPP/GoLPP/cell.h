@@ -4,28 +4,24 @@ class Cell {
 private:
 	int x;
 	int y;
-	bool isAlive;
 	int neighbors;
 public:
 	// constructor
 	Cell() {
 		x = 0;
 		y = 0;
-		isAlive = true;
 		neighbors = 0;
 	}
-	Cell(int, int, bool);
+	Cell(int, int);
 
 	// Accessors
 	int getX();
 	int getY();
-	bool getAlive();
 	int getNeighbors();
 
 	// Mutators
 	void setX(int);
 	void setY(int);
-	void setAlive(bool);
 	void setNeighbors(int);
 
 	// Methods

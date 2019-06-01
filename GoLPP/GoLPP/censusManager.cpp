@@ -6,6 +6,7 @@
 
 /*************** Configuration ****************/
 void CensusManager::setRenderArea(RECT rect) {
+	renderer.setClientArea(rect);
 	rect.bottom -= uiAreaHeight;
 	renderer.setRenderArea(rect);
 }
@@ -14,11 +15,8 @@ void CensusManager::setRenderArea(RECT rect) {
 void CensusManager::renderState(HWND hwnd, HDC hdc) {
 	RECT rect;
 	GetClientRect(hwnd, &rect);
-
 	setRenderArea(rect);
 	renderer.drawGrid(hwnd, hdc);
-
-
 	renderer.renderState(hwnd, hdc, cellCensus_);
 }
 
@@ -66,29 +64,37 @@ void CensusManager::sortZygotes() {
 }
 
 int CensusManager::addCell(Cell c) {
-	// if c is lower than the first element,
-	// just insert at 0
-	if (c < cellCensus_[0]) {
-		cellCensus_.insert(cellCensus_.begin(), c);
-		return 0;
-	}	
-
-	int ctr = 1;
-	std::vector<Cell>::iterator cit = cellCensus_.begin();
-
-	// find element index to insert cell into and insert it
-	do {
-		ctr++;
-		if (c > *cit && ++cit != cellCensus_.end() && c < *cit) {
-			cellCensus_.insert(cit, c);
-			return ctr;
+	// if c isn't already in the cell census
+	if (std::find(cellCensus_.begin(), cellCensus_.end(), c) == cellCensus_.end() ) {
+		// if c is lower than the first element,
+		// just insert at 0
+		if (cellCensus_.size() == 0 || c < cellCensus_[0]) {
+			cellCensus_.insert(cellCensus_.begin(), c);
+			return 0;
 		}
-	} while (cit != cellCensus_.end());
 
-	// if c is greater than all the elements, insert cell
-	// into last index
-	cellCensus_.push_back(c);
+		int ctr = 1;
+		std::vector<Cell>::iterator cit = cellCensus_.begin();
+
+		// find element index to insert cell into and insert it
+		do {
+			ctr++;
+			if (c > *cit && ++cit != cellCensus_.end() && c < *cit) {
+				cellCensus_.insert(cit, c);
+				return ctr;
+			}
+		} while (cit != cellCensus_.end());
+
+		// if c is greater than all the elements, insert cell
+		// into last index
+		cellCensus_.push_back(c);
+	}
 	return cellCensus_.size();
+}
+
+void CensusManager::removeCell(Cell c) {
+	if (std::find(cellCensus_.begin(), cellCensus_.end(), c) != cellCensus_.end())
+	cellCensus_.erase(std::find(cellCensus_.begin(),cellCensus_.end(),c));
 }
 
 bool CensusManager::findCell(Cell c) {
@@ -116,8 +122,26 @@ bool CensusManager::findCell(Cell c) {
 }
 
 bool CensusManager::findCell(int x, int y) {
-	Cell newCell(x, y, true);
+	Cell newCell(x, y);
 	return findCell(newCell);
+}
+
+void CensusManager::addCellXY(int x, int y) {
+	int cx = x / renderer.getRenderData().cellSizeX;
+	int cy = y / renderer.getRenderData().cellSizeY;
+
+	Cell c(cx, cy);
+
+	addCell(c);
+}
+
+void CensusManager::removeCellXY(int x, int y) {
+	int cx = x / renderer.getRenderData().cellSizeX;
+	int cy = y / renderer.getRenderData().cellSizeY;
+
+	Cell c(cx, cy);
+
+	removeCell(c);
 }
 
 /******************* GOL LOGIC **************************/
@@ -136,28 +160,28 @@ void CensusManager::updateNeighborStatus(Cell &c) {
 	c.setNeighbors(0);
 	
 	if (findCell(c.getX() - 1, c.getY() - 1)) c.setNeighbors(c.getNeighbors() + 1);// c++;
-	else zygoteCensus_.push_back(*(new Cell(c.getX() - 1, c.getY() - 1, true)));
+	else zygoteCensus_.push_back(*(new Cell(c.getX() - 1, c.getY() - 1)));
 
 	if (findCell(c.getX(), c.getY() - 1)) c.setNeighbors(c.getNeighbors() + 1);//c++;
-	else zygoteCensus_.push_back(*(new Cell(c.getX(), c.getY() - 1, true)));
+	else zygoteCensus_.push_back(*(new Cell(c.getX(), c.getY() - 1)));
 
 	if (findCell(c.getX() + 1, c.getY() - 1)) c.setNeighbors(c.getNeighbors() + 1);//c++;
-	else zygoteCensus_.push_back(*(new Cell(c.getX() + 1, c.getY() - 1, true)));
+	else zygoteCensus_.push_back(*(new Cell(c.getX() + 1, c.getY() - 1)));
 
 	if (findCell(c.getX() - 1, c.getY())) c.setNeighbors(c.getNeighbors() + 1);//c++;
-	else zygoteCensus_.push_back(*(new Cell(c.getX() - 1, c.getY(), true)));
+	else zygoteCensus_.push_back(*(new Cell(c.getX() - 1, c.getY())));
 
 	if (findCell(c.getX() + 1, c.getY())) c.setNeighbors(c.getNeighbors() + 1);//c++;
-	else zygoteCensus_.push_back(*(new Cell(c.getX() + 1, c.getY(), true)));
+	else zygoteCensus_.push_back(*(new Cell(c.getX() + 1, c.getY())));
 
 	if (findCell(c.getX() - 1, c.getY() + 1)) c.setNeighbors(c.getNeighbors() + 1);//c++;
-	else zygoteCensus_.push_back(*(new Cell(c.getX() - 1, c.getY() + 1, true)));
+	else zygoteCensus_.push_back(*(new Cell(c.getX() - 1, c.getY() + 1)));
 
 	if (findCell(c.getX(), c.getY() + 1)) c.setNeighbors(c.getNeighbors() + 1);//c++;
-	else zygoteCensus_.push_back(*(new Cell(c.getX(), c.getY() + 1, true)));
+	else zygoteCensus_.push_back(*(new Cell(c.getX(), c.getY() + 1)));
 
 	if (findCell(c.getX() + 1, c.getY() + 1)) c.setNeighbors(c.getNeighbors() + 1);//c++;
-	else zygoteCensus_.push_back(*(new Cell(c.getX() + 1, c.getY() + 1, true)));
+	else zygoteCensus_.push_back(*(new Cell(c.getX() + 1, c.getY() + 1)));
 }
 
 void CensusManager::updateCellCensus() {

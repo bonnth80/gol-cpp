@@ -7,7 +7,8 @@ struct RenderData {
 	int cellSizeX;		// horizontal size of cells in pixels
 	int cellSizeY;		// vertical size of cells in pixels
 	int originX;		// pixel location of x origin
-	int originY;		// pixel location of y origin	
+	int originY;		// pixel location of y origin
+	RECT clientArea;	// Are of client	
 	RECT renderArea;	// Area of client to draw grid
 };
 
@@ -27,8 +28,12 @@ public:
 		render_data_ = rd;
 	}
 
-	// Mutator
+	// Accessors
+	RenderData getRenderData();
+
+	// Mutators
 	void setRenderData(RenderData rd) { render_data_ = rd; };
+	void setClientArea(RECT);
 	void setRenderArea(RECT);
 
 	// Methods
