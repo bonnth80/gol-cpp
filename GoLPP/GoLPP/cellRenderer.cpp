@@ -3,51 +3,51 @@
 #include <string>
 #include "golDebug.h"
 
-void Renderer::drawGrid(HWND hwnd, HDC hdc) {
+void Renderer::drawGrid(HWND hwnd, HDC hdcM) {
 	HBRUSH hBrush;
 
 	hBrush = CreateSolidBrush(RGB(255,255,255));
-	SelectObject(hdc, hBrush);
+	SelectObject(hdcM, hBrush);
 
-	Rectangle(hdc,0,0,render_data_.clientArea.right, render_data_.clientArea.bottom);
+	Rectangle(hdcM,0,0,render_data_.clientArea.right, render_data_.clientArea.bottom);
 
-	ReleaseDC(hwnd, hdc);
+	ReleaseDC(hwnd, hdcM);
 	DeleteObject(hBrush);
 
 	for (int i = 0; i <= render_data_.renderArea.right; i += render_data_.cellSizeX) {
-		MoveToEx(hdc, i, 0, NULL);
-		LineTo(hdc, i, render_data_.renderArea.bottom);
+		MoveToEx(hdcM, i, 0, NULL);
+		LineTo(hdcM, i, render_data_.renderArea.bottom);
 	}
 
 	for (int i = 0; i <= render_data_.renderArea.bottom; i += render_data_.cellSizeY) {
-		MoveToEx(hdc, 0, i, NULL);
-		LineTo(hdc, render_data_.renderArea.right, i);
+		MoveToEx(hdcM, 0, i, NULL);
+		LineTo(hdcM, render_data_.renderArea.right, i);
 	}
 }
 
-void Renderer::drawCell(HWND hwnd, HDC hdc, Cell cell) {
+void Renderer::drawCell(HWND hwnd, HDC hdcM, Cell cell) {
 	HBRUSH hBrush;
 
 	hBrush = CreateSolidBrush(RGB(36,68,149));
-	SelectObject(hdc, hBrush);
+	SelectObject(hdcM, hBrush);
 
-	Rectangle(hdc,
+	Rectangle(hdcM,
 		render_data_.cellSizeX * cell.getX(),
 		render_data_.cellSizeY * cell.getY(),
 		render_data_.cellSizeX * (cell.getX() + 1) + 1,
 		render_data_.cellSizeY * (cell.getY() + 1) + 1);
 
-	ReleaseDC(hwnd, hdc);
+	ReleaseDC(hwnd, hdcM);
 	DeleteObject(hBrush);
 }
 
-void Renderer::renderState(HWND hwnd, HDC hdc, std::vector<Cell> cellList) {
+void Renderer::renderState(HWND hwnd, HDC hdcM, std::vector<Cell> cellList) {
 	for (unsigned int i = 0; i < cellList.size(); i++) {
 		if (cellList[i].getX() * render_data_.cellSizeX > render_data_.renderArea.left
 			&& cellList[i].getX() * render_data_.cellSizeX < render_data_.renderArea.right
 			&& cellList[i].getY() * render_data_.cellSizeY > render_data_.renderArea.top
 			&& cellList[i].getY() * render_data_.cellSizeY < render_data_.renderArea.bottom)
-			drawCell(hwnd, hdc, cellList[i]);
+			drawCell(hwnd, hdcM, cellList[i]);
 	}
 }
 

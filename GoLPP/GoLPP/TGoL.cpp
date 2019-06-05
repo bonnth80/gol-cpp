@@ -68,13 +68,13 @@ void GetLargestDisplayMode(int * pcxBitmap, int * pcyBitmap)
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
-		static HDC hdcShadowMem = 0;
+	static HDC hdcShadowMem = 0;
 	PAINTSTRUCT ps;
-	RECT rect;
+	static RECT rect;
 	INT mouseX = 0, mouseY = 0;
 	Cell cBuffer;
 	static HBITMAP hBitmap;
-	static int cxBitmap, cyBitmap;
+	static int cxBitmap, cyBitmap, cxClient,cyClient;
 	static bool lMouseDown = false, rMouseDown = false;
 
 #ifdef GOL_DEBUG_MODE
@@ -90,6 +90,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	switch (message) {
 	case WM_CREATE:
 		GetLargestDisplayMode(&cxBitmap, &cyBitmap);
+		GetClientRect(hwnd, &rect);
 
 		hdc = GetDC(hwnd);
 		hBitmap = CreateCompatibleBitmap(hdc, cxBitmap, cyBitmap);
@@ -105,29 +106,30 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		SelectObject(hdcShadowMem, hBitmap);
 		PatBlt(hdcShadowMem, 0, 0, cxBitmap, cyBitmap, WHITENESS);
 		return 0;
-		//GetClientRect(hwnd, &rect);
-		//hdc = GetWindowDC(hwnd);
-		//cm.setRenderArea(rect);
-		//hBitmap = CreateCompatibleBitmap(hdc, rect.right, rect.bottom);
-		//hdcShadowMem = CreateCompatibleDC(hdc);
-		//ReleaseDC(hwnd,hdc);
+
+	case WM_SIZE:
+		cxClient = LOWORD(lParam);
+		cyClient = HIWORD(lParam);
+		return 0;
+
+	case WM_ERASEBKGND:
+		return 1;
 
 	case WM_PAINT:		
-		GetClientRect(hwnd, &rect);
-
-		SelectObject(hdcShadowMem, hBitmap);
-
+		//GetClientRect(hwnd, &rect);
+		//SelectObject(hdcShadowMem, hBitmap);
 		cm.renderState(hwnd,hdcShadowMem);
 
 		hdc = BeginPaint(hwnd, &ps);
 
-		BitBlt(hdc, 0, 0, cxBitmap, cyBitmap, hdcShadowMem, 0, 0, SRCCOPY);
+		BitBlt(hdc, 0, 0, cxClient, cyClient, hdcShadowMem, 0, 0, SRCCOPY);
 		
 		EndPaint(hwnd, &ps);
 		return 0;
 
 	case WM_KEYDOWN:
-		cm.stepForward();		
+		cm.stepForward();
+
 		InvalidateRect(hwnd, NULL, TRUE);
 		return 0;
 
@@ -136,6 +138,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		mouseY = HIWORD(lParam);
 		lMouseDown = true;
 		cm.addCellXY(mouseX, mouseY);
+
 		InvalidateRect(hwnd, NULL, TRUE);
 		return 0;
 
@@ -148,6 +151,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		mouseY = HIWORD(lParam);
 		rMouseDown = true;
 		cm.removeCellXY(mouseX, mouseY);
+
 		InvalidateRect(hwnd, NULL, TRUE);
 		return 0;
 
@@ -160,12 +164,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		mouseY = HIWORD(lParam);
 		if (lMouseDown) {
 			cm.addCellXY(mouseX, mouseY);
+
 			InvalidateRect(hwnd, NULL, TRUE);
+			return 0;
 		}
 
 		if (rMouseDown) {
 			cm.removeCellXY(mouseX, mouseY);
+
 			InvalidateRect(hwnd, NULL, TRUE);
+			return 0;
 		}
 
 		return 0;

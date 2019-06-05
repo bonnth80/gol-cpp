@@ -64,31 +64,32 @@ void CensusManager::sortZygotes() {
 }
 
 int CensusManager::addCell(Cell c) {
-	// if c isn't already in the cell census
-	if (std::find(cellCensus_.begin(), cellCensus_.end(), c) == cellCensus_.end() ) {
-		// if c is lower than the first element,
-		// just insert at 0
-		if (cellCensus_.size() == 0 || c < cellCensus_[0]) {
-			cellCensus_.insert(cellCensus_.begin(), c);
-			return 0;
-		}
-
-		int ctr = 1;
-		std::vector<Cell>::iterator cit = cellCensus_.begin();
-
-		// find element index to insert cell into and insert it
-		do {
-			ctr++;
-			if (c > *cit && ++cit != cellCensus_.end() && c < *cit) {
-				cellCensus_.insert(cit, c);
-				return ctr;
-			}
-		} while (cit != cellCensus_.end());
-
-		// if c is greater than all the elements, insert cell
-		// into last index
-		cellCensus_.push_back(c);
+	// if c is lower than the first element,
+	// just insert at 0
+	if (cellCensus_.size() == 0 || c < cellCensus_[0]) {
+		cellCensus_.insert(cellCensus_.begin(), c);
+		return 0;
 	}
+
+	int ctr = 1;
+	std::vector<Cell>::iterator cit = cellCensus_.begin();
+
+	// find element index to insert cell into and insert it
+	do {
+		if (c == *cit)
+			return cellCensus_.size(); // cell is already in census
+		
+		ctr++;
+		if (c > *cit && ++cit != cellCensus_.end() && c < *cit) {
+			cellCensus_.insert(cit, c);
+			return ctr;
+		}
+	} while (cit != cellCensus_.end());
+
+	// if c is greater than all the elements, insert cell
+	// into last index
+	cellCensus_.push_back(c);
+
 	return cellCensus_.size();
 }
 
