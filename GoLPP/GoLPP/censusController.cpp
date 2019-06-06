@@ -166,4 +166,17 @@ void CensusController::stepForward() {
 void CensusController::renderState(HWND hwnd, HDC hdc) {
 	r.drawGrid(hwnd, hdc);
 	r.renderState(hwnd, hdc, CellGrid_);
+
+	// temp - render basic control help
+
+	UINT buf = 0;
+	WCHAR dbNfo[30];
+	buf = wsprintf(dbNfo, TEXT("Mouse Left: Draw Cells"));
+	TextOut(hdc, 40, 560, dbNfo, buf);
+	buf = wsprintf(dbNfo, TEXT("Mouse Right: Erase Cells"));
+	TextOut(hdc, 40, 580, dbNfo, buf);
+	buf = wsprintf(dbNfo, TEXT("Any Key: Step Forward"));
+	TextOut(hdc, 40, 600, dbNfo, buf);
+	buf = wsprintf(dbNfo, TEXT("Hold Any Key: Play Forward"));
+	TextOut(hdc, 40, 620, dbNfo, buf);
 }
