@@ -1,9 +1,11 @@
 #include "cellRenderer.h"
 #include "cell.h"
+#include "censusController.h"
+#include "cellRow.h"
 #include <string>
 #include "golDebug.h"
 
-void Renderer::drawGrid(HWND hwnd, HDC hdcM) {
+void GOL_Renderer::drawGrid(HWND hwnd, HDC hdcM) {
 	HBRUSH hBrush;
 
 	hBrush = CreateSolidBrush(RGB(255,255,255));
@@ -25,7 +27,7 @@ void Renderer::drawGrid(HWND hwnd, HDC hdcM) {
 	}
 }
 
-void Renderer::drawCell(HWND hwnd, HDC hdcM, Cell cell) {
+void GOL_Renderer::drawCell(HWND hwnd, HDC hdcM, Cell cell) {
 	HBRUSH hBrush;
 
 	hBrush = CreateSolidBrush(RGB(36,68,149));
@@ -41,24 +43,34 @@ void Renderer::drawCell(HWND hwnd, HDC hdcM, Cell cell) {
 	DeleteObject(hBrush);
 }
 
-void Renderer::renderState(HWND hwnd, HDC hdcM, std::vector<Cell> cellList) {
-	for (unsigned int i = 0; i < cellList.size(); i++) {
-		if (cellList[i].getX() * render_data_.cellSizeX > render_data_.renderArea.left
-			&& cellList[i].getX() * render_data_.cellSizeX < render_data_.renderArea.right
-			&& cellList[i].getY() * render_data_.cellSizeY > render_data_.renderArea.top
-			&& cellList[i].getY() * render_data_.cellSizeY < render_data_.renderArea.bottom)
-			drawCell(hwnd, hdcM, cellList[i]);
+void GOL_Renderer::renderState(HWND hwnd, HDC hdcM, std::vector<CellRow *> cellGrid) {
+	Cell *c;
+	for (unsigned int y = 0; y < cellGrid.size(); y++) {
+		for (unsigned int x = 0; x < cellGrid[y]->getRowSize(); x++) {
+			c = cellGrid[y]->getCellAt(x);
+
+			if (c->getIsAlive()) {
+
+				if (c->getX() * render_data_.cellSizeX > render_data_.renderArea.left
+					&& c->getX() * render_data_.cellSizeX < render_data_.renderArea.right
+					&& c->getY() * render_data_.cellSizeY > render_data_.renderArea.top
+					&& c->getY() * render_data_.cellSizeY < render_data_.renderArea.bottom)
+
+					drawCell(hwnd, hdcM, *c);
+
+			}
+		}
 	}
 }
 
-RenderData Renderer::getRenderData() {
+RenderData GOL_Renderer::getRenderData() {
 	return render_data_;
 }
 
-void Renderer::setClientArea(RECT rect) {
+void GOL_Renderer::setClientArea(RECT rect) {
 	render_data_.clientArea = rect;
 }
 
-void Renderer::setRenderArea(RECT rect) {
+void GOL_Renderer::setRenderArea(RECT rect) {
 	render_data_.renderArea = rect;
 }

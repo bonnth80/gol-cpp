@@ -1,66 +1,32 @@
 #include "cell.h"
 
-Cell::Cell(int px, int py) {
-	x = px;
-	y = py;
-	neighbors = 0;
+Cell::Cell(int col, int row) {
+	x = col;
+	y = row;
+	isAlive = false;
+
+	for (int i = 0; i < 8; i++) {
+		neighborhood[i] = nullptr;
+	}
 }
 
-// Accessors ********************************
-int Cell::getX() {return x;}
-int Cell::getY() {return y;}
-int Cell::getNeighbors() { return neighbors; }
+int Cell::getX() { return x; }
+int Cell::getY() { return y; }
+bool Cell::getIsAlive() { return isAlive; }
 
-// Mutators *********************************
-void Cell::setX(int pX) { x = pX; };
-void Cell::setY(int pY) { y = pY; };
-void Cell::setNeighbors(int pLN) { neighbors = pLN; }
-
-// Operators ********************************
-bool Cell::operator==(Cell cRight) {
-	return (x == cRight.x && y == cRight.y);
+Cell * Cell::getNeighbor(int index) {
+	return neighborhood[index];
 }
 
-bool Cell::operator!=(Cell cRight) {
-	return (x != cRight.x || y != cRight.y);
+
+void Cell::setNeighbor(int position, Cell * c) {
+	neighborhood[position] = c;
 }
 
-bool Cell::operator>(Cell cRight) {
-	if (x > cRight.x)
-		return true;
-	else
-		return (x == cRight.x && y > cRight.y);
+void Cell::setIsAlive(bool alive) {
+	isAlive = alive;
 }
 
-bool Cell::operator>=(Cell cRight) {
-	if (x > cRight.x)
-		return true;
-	else
-		return (x == cRight.x && y >= cRight.y);
-}
-
-bool Cell::operator<(Cell cRight) {
-	if (x < cRight.x)
-		return true;
-	else
-		return (x == cRight.x && y < cRight.y);
-}
-
-bool Cell::operator<=(Cell cRight) {
-	if (x < cRight.x)
-		return true;
-	else
-		return (x == cRight.x && y <= cRight.y);
-}
-
-Cell Cell::operator++(int cRight) {
-	Cell temp(x, y);
-	temp.neighbors = neighbors;
-	neighbors++;
-	return temp;
-}
-
-Cell Cell::operator++() {
-	neighbors++;
-	return *this;
+void Cell::toggleIsAlive() {
+	isAlive = !isAlive;
 }

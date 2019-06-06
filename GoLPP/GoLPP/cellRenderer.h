@@ -1,30 +1,23 @@
 #pragma once
 #include "cell.h"
+#include "cellRow.h"
+#include "renderData.h"
 #include <windows.h>
 #include <vector>
 
-struct RenderData {
-	int cellSizeX;		// horizontal size of cells in pixels
-	int cellSizeY;		// vertical size of cells in pixels
-	int originX;		// pixel location of x origin
-	int originY;		// pixel location of y origin
-	RECT clientArea;	// Are of client	
-	RECT renderArea;	// Area of client to draw grid
-};
-
-class Renderer {
+class GOL_Renderer {
 private:
 	RenderData render_data_;
 public:
 	// Constructor
-	Renderer() {
+	GOL_Renderer() {
 		render_data_.cellSizeX = 10;
 		render_data_.cellSizeY = 10;
 		render_data_.originX = 0;
 		render_data_.originY = 0;
 	}
 
-	Renderer(RenderData rd) {
+	GOL_Renderer(RenderData rd) {
 		render_data_ = rd;
 	}
 
@@ -39,5 +32,5 @@ public:
 	// Methods
 	void drawGrid(HWND, HDC);
 	void drawCell(HWND, HDC, Cell);
-	void renderState(HWND, HDC, std::vector<Cell>);
+	void renderState(HWND, HDC, std::vector<CellRow *>);
 };

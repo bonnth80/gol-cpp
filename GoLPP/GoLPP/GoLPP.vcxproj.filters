@@ -21,10 +21,13 @@
     <ClCompile Include="cell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="censusManager.cpp">
+    <ClCompile Include="cellRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cellRenderer.cpp">
+    <ClCompile Include="censusController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cellRow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,13 +35,19 @@
     <ClInclude Include="cell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="censusManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cellRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="golDebug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="censusController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cellRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

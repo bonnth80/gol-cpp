@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <vector>
 #include "cell.h"
-#include "censusManager.h"
+#include "censusController.h"
 #include "cellRenderer.h"
 #include "golDebug.h"
 
@@ -68,29 +68,34 @@ void GetLargestDisplayMode(int * pcxBitmap, int * pcyBitmap)
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	HDC hdc;
-	static HDC hdcShadowMem = 0;
 	PAINTSTRUCT ps;
-	static RECT rect;
-	INT mouseX = 0, mouseY = 0;
-	Cell cBuffer;
+	static HDC hdcShadowMem = 0;
+	static RECT rect, renderRect;
 	static HBITMAP hBitmap;
+
 	static int cxBitmap, cyBitmap, cxClient,cyClient;
 	static bool lMouseDown = false, rMouseDown = false;
+	INT mouseX = 0, mouseY = 0;
 
-#ifdef GOL_DEBUG_MODE
-	GDC.resetCurrentLine();
+	RenderData rd;
 
-	static Cell cell_00(20, 20);
-	static std::vector<Cell> vC;
-	vC.push_back(cell_00);
-#endif
+	static CensusController GoL(200,100);
 
-	static CensusManager cm(vC, hwnd);
-
+	// **********  MESSAGE HANDLING ******************
 	switch (message) {
 	case WM_CREATE:
 		GetLargestDisplayMode(&cxBitmap, &cyBitmap);
 		GetClientRect(hwnd, &rect);
+
+		rd.cellSizeX = 10;
+		rd.cellSizeY = 10;
+		rd.clientArea = rect;
+		rd.originX = 0;
+		rd.originY = 0;
+		rd.renderArea = rect;
+		rd.renderArea.bottom -= 200;
+
+		GoL.setData(rd);
 
 		hdc = GetDC(hwnd);
 		hBitmap = CreateCompatibleBitmap(hdc, cxBitmap, cyBitmap);
@@ -110,15 +115,23 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_SIZE:
 		cxClient = LOWORD(lParam);
 		cyClient = HIWORD(lParam);
+
+		rd.cellSizeX = 10;
+		rd.cellSizeY = 10;
+		rd.clientArea = rect;
+		rd.originX = 0;
+		rd.originY = 0;
+		rd.renderArea = rect;
+		rd.renderArea.bottom -= 200;
+
+		GoL.setData(rd);
 		return 0;
 
 	case WM_ERASEBKGND:
 		return 1;
 
 	case WM_PAINT:		
-		//GetClientRect(hwnd, &rect);
-		//SelectObject(hdcShadowMem, hBitmap);
-		cm.renderState(hwnd,hdcShadowMem);
+		GoL.renderState(hwnd,hdcShadowMem);
 
 		hdc = BeginPaint(hwnd, &ps);
 
@@ -128,7 +141,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		return 0;
 
 	case WM_KEYDOWN:
-		cm.stepForward();
+		GoL.stepForward();
 
 		InvalidateRect(hwnd, NULL, TRUE);
 		return 0;
@@ -137,7 +150,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		mouseX = LOWORD(lParam);
 		mouseY = HIWORD(lParam);
 		lMouseDown = true;
-		cm.addCellXY(mouseX, mouseY);
+		GoL.spawnCell(int(mouseX / 10), int(mouseY / 10));
 
 		InvalidateRect(hwnd, NULL, TRUE);
 		return 0;
@@ -150,7 +163,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		mouseX = LOWORD(lParam);
 		mouseY = HIWORD(lParam);
 		rMouseDown = true;
-		cm.removeCellXY(mouseX, mouseY);
+		GoL.killCell(int(mouseX / 10), int(mouseY / 10));
 
 		InvalidateRect(hwnd, NULL, TRUE);
 		return 0;
@@ -163,14 +176,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		mouseX = LOWORD(lParam);
 		mouseY = HIWORD(lParam);
 		if (lMouseDown) {
-			cm.addCellXY(mouseX, mouseY);
+			GoL.spawnCell(int(mouseX / 10), int(mouseY / 10));
 
 			InvalidateRect(hwnd, NULL, TRUE);
 			return 0;
 		}
 
 		if (rMouseDown) {
-			cm.removeCellXY(mouseX, mouseY);
+			GoL.killCell(int(mouseX / 10), int(mouseY / 10));
 
 			InvalidateRect(hwnd, NULL, TRUE);
 			return 0;

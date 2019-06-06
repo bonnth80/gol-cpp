@@ -31,4 +31,7 @@ static GolDebugController GDC;
 //WCHAR dbNfo[24];
 //buf = wsprintf(dbNfo, TEXT("GDC CurrentlineX: %d"), GDC.getCurrentLine());
 //TextOut(hdc, GDC.getLeft(), GDC.useLine(), dbNfo, buf);
+
+//OutputDebugString(TEXT("Holy shit"));
+
 #endif
